@@ -44,7 +44,6 @@ class Window():
         b10 = Button(window, text="List history", command=self.list_history)
         b10.grid(row=1, column=4)
 
-
     def add_student(self):
         window = Toplevel()
         window.wm_title("Student")
@@ -63,8 +62,14 @@ class Window():
         e2 = Entry(window, textvariable=self.id_name)
         e2.grid(row=1, column=1)
 
+        variable = StringVar(window)
+        variable.set("Major")  # default value
+
+        w = OptionMenu(window, variable, "one", "two", "three")
+        w.grid(row=2, column=0)
+
         b1 = Button(window, text="insert data", command=self.insert_student)
-        b1.grid(row=2, column=0)
+        b1.grid(row=3, column=0)
 
         window.geometry("500x200")
 
