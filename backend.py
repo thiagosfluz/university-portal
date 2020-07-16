@@ -6,16 +6,17 @@ class Database:
     def __init__(self, db):
         self.conn = sqlite3.connect(db)
         self.cur = self.conn.cursor()
-        self.cur.execute("CREATE TABLE IF NOT EXISTS student (id INT PRIMARY KEY not null, name text not null)")
         self.cur.execute("CREATE TABLE IF NOT EXISTS major (name text not null)")
+        self.cur.execute("CREATE TABLE IF NOT EXISTS student (id INT PRIMARY KEY not null, name text not null, major_name text not null, "
+                         "FOREIGN KEY (major_name) references major (name))")
         self.conn.commit()
 
-    def insert_student(self, id, name):
+    def insert_student(self, id, name, major_name):
         try:
-            self.cur.execute("INSERT INTO student VALUES (?, ?)", (id, name))
+            self.cur.execute("INSERT INTO student VALUES (?, ?, ?)", (id, name, major_name))
             self.conn.commit()
             self.alert_popup("Success", "The student was recorded!")
-            print("Sucess")
+            print("Success")
         except:
             self.alert_popup("Try again", "ERROR")
 

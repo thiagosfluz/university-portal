@@ -62,11 +62,20 @@ class Window():
         e2 = Entry(window, textvariable=self.id_name)
         e2.grid(row=1, column=1)
 
-        variable = StringVar(window)
-        variable.set("Major")  # default value
+        l3 = Label(window, text="Major:")
+        l3.grid(row=2, column=0)
 
-        w = OptionMenu(window, variable, "one", "two", "three")
-        w.grid(row=2, column=0)
+        self.variable = StringVar(window)
+
+
+        if len(Major.list_major()) > 0:
+            self.variable.set(Major.list_major()[0])  # default value
+            w = OptionMenu(window, self.variable, *Major.list_major())
+            w.grid(row=2, column=1)
+        else:
+            self.variable.set("")
+            w = OptionMenu(window, self.variable, "")
+            w.grid(row=2, column=1)
 
         b1 = Button(window, text="insert data", command=self.insert_student)
         b1.grid(row=3, column=0)
@@ -76,9 +85,9 @@ class Window():
         window.mainloop()
 
     def insert_student(self):
-        print(self.id_text.get(), self.id_name.get())
+        print(self.id_text.get(), self.id_name.get(), self.variable.get())
         # Student.insertstudent(self.id_text.get(), self.id_name.get())
-        student = Student(self.id_text.get(), self.id_name.get())
+        student = Student(self.id_text.get(), self.id_name.get(), self.variable.get())
         student.insertstudent()
 
 
