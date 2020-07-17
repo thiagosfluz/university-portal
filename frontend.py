@@ -65,13 +65,15 @@ class Window():
         l3 = Label(window, text="Major:")
         l3.grid(row=2, column=0)
 
-        self.variable = StringVar(window)
+        self.variable = StringVar()
 
 
         if len(Major.list_major()) > 0:
             self.variable.set(Major.list_major()[0])  # default value
             w = OptionMenu(window, self.variable, *Major.list_major())
             w.grid(row=2, column=1)
+
+
         else:
             self.variable.set("")
             w = OptionMenu(window, self.variable, "")
