@@ -71,6 +71,7 @@ class Window():
         if len(Major.list_major()) > 0:
             self.variable.set(Major.list_major()[0])  # default value
             w = OptionMenu(window, self.variable, *Major.list_major())
+            print("I HAVE TO MAKE IT WORK" + self.variable.get())
             w.grid(row=2, column=1)
 
 
@@ -88,6 +89,7 @@ class Window():
 
     def insert_student(self):
         print(self.id_text.get(), self.id_name.get(), self.variable.get())
+
         # Student.insertstudent(self.id_text.get(), self.id_name.get())
         student = Student(self.id_text.get(), self.id_name.get(), self.variable.get())
         student.insertstudent()
@@ -125,8 +127,8 @@ class Window():
         l1 = Label(window, text="Major name:")
         l1.grid(row=0, column=0)
 
-        self.id_text = StringVar()
-        e1 = Entry(window, textvariable=self.id_text)
+        self.id_major = StringVar()
+        e1 = Entry(window, textvariable=self.id_major)
         e1.grid(row=0, column=1)
 
         b1 = Button(window, text="insert data", command=self.insert_major)
@@ -140,7 +142,8 @@ class Window():
         window.mainloop()
 
     def insert_major(self):
-        major = Major(self.id_text.get())
+        print(self.id_major.get())
+        major = Major(self.id_major.get())
         major.insert_major()
 
     def list_major(self):
@@ -161,6 +164,7 @@ class Window():
 
         list1.delete(END, 0)
         for rows in Major.list_major():
+            print("Major items"+str(rows))
             list1.insert(END, rows)
 
         window.geometry("500x200")

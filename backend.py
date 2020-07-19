@@ -23,6 +23,7 @@ class Database:
     def view_student(self):
         self.cur.execute("SELECT * FROM student")
         rows = self.cur.fetchall()
+        print("Imprimindo ROWS" + str(rows))
         return rows
 
     def insert_major(self, name):

@@ -14,5 +14,6 @@ class Major:
 
     @staticmethod
     def list_major():
+        print("HERE"+str(database.view_major()))
         return database.view_major()
 
