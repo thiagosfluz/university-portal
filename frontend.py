@@ -71,7 +71,8 @@ class Window():
         if len(Major.list_major()) > 0:
             self.variable.set(Major.list_major()[0])  # default value
             w = OptionMenu(window, self.variable, *Major.list_major())
-            print("I HAVE TO MAKE IT WORK" + self.variable.get())
+            print("HEREEEEEEEEEEEE")
+            print(self.variable.get().strip())
             w.grid(row=2, column=1)
 
 
