@@ -213,24 +213,64 @@ class Window():
         window = Toplevel()
         window.wm_title("Major Curriculum")
 
-        l1 = Label(window, text="Major Curriculum year:")
+        l1 = Label(window, text="Major Curriculum ID:")
         l1.grid(row=0, column=0)
 
-        id_text = StringVar()
-        e1 = Entry(window, textvariable=id_text)
+        self.id_text = StringVar()
+        e1 = Entry(window, textvariable=self.id_text)
         e1.grid(row=0, column=1)
 
-        b1 = Button(window, text="insert data", command=self.list_course)
-        b1.grid(row=2, column=0)
+        l2 = Label(window, text="Year:")
+        l2.grid(row=1, column=0)
 
-        b2 = Button(window, text="free fields", command=self.list_course)
-        b2.grid(row=2, column=1)
+        self.id_year = StringVar()
+        e2 = Entry(window, textvariable=self.id_year)
+        e2.grid(row=1, column=1)
+
+        l3 = Label(window, text="Semester:")
+        l3.grid(row=2, column=0)
+
+        self.id_semester = StringVar()
+        e3 = Entry(window, textvariable=self.id_semester)
+        e3.grid(row=2, column=1)
+
+        self.variable = StringVar()
+
+        if len(Courses.list_courses()) > 0:
+            self.variable.set(Courses.list_courses()[0])  # default value
+
+            courses = []
+
+            # create a list of string to be used in the method below
+            for i in Courses.list_courses():
+                courses.append(str(*i))
+
+            w = OptionMenu(window, self.variable, *courses)
+            print("HEREEEEEEEEEEEE")
+            print(self.variable.get())
+            w.grid(row=3, column=1)
+
+
+        else:
+            self.variable.set("")
+            w = OptionMenu(window, self.variable, "")
+            w.grid(row=3, column=1)
+
+        b1 = Button(window, text="insert data", command=self.insert_curriculum)
+        b1.grid(row=4, column=0)
+
+
+
 
         window.geometry("500x200")
 
 
 
         window.mainloop()
+
+    def insert_curriculum(self):
+        curriculum = Courses(self.self.id_text.get(), self.id_year.get(), self.id_semester)
+        curriculum.insert_courses()
 
     def list_curriculum(self):
         window = Toplevel()

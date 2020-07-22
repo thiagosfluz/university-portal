@@ -32,7 +32,7 @@ class Database:
             self.cur.execute("INSERT INTO major VALUES (?, ?, ?)", (id, name, courses_id))
             self.conn.commit()
             self.alert_popup("Success", "The major was recorded!")
-            print("Sucess")
+            print("Success")
         except:
             self.alert_popup("Try again", "ERROR")
 
@@ -41,12 +41,12 @@ class Database:
         rows = self.cur.fetchall()
         return rows
 
-    def insert_courses(self, name):
+    def insert_courses(self, id, year, semester, courses_id):
         try:
-            self.cur.execute("INSERT INTO major VALUES (?)", (name,))
+            self.cur.execute("INSERT INTO courses VALUES (?, ?, ?, ?)", (id, year, semester, courses_id))
             self.conn.commit()
-            self.alert_popup("Success", "The major was recorded!")
-            print("Sucess")
+            self.alert_popup("Success", "The curriculum was recorded!")
+            print("Success")
         except:
             self.alert_popup("Try again", "ERROR")
 
