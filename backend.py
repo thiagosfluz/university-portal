@@ -6,9 +6,10 @@ class Database:
     def __init__(self, db):
         self.conn = sqlite3.connect(db)
         self.cur = self.conn.cursor()
-        self.cur.execute("CREATE TABLE IF NOT EXISTS major (name text not null)")
+        self.cur.execute("CREATE TABLE IF NOT EXISTS major (id INT PRIMARY KEY not null, name text not null, courses_id text not null, FOREIGN KEY (courses_id) references courses (id))")
         self.cur.execute("CREATE TABLE IF NOT EXISTS student (id INT PRIMARY KEY not null, name text not null, major_name text not null, "
                          "FOREIGN KEY (major_name) references major (name))")
+        self.cur.execute("CREATE TABLE IF NOT EXISTS courses (id INT PRIMARY KEY not null, year integer not null, semester integer not null)")
         self.conn.commit()
 
     def insert_student(self, id, name, major_name):
@@ -26,7 +27,21 @@ class Database:
         print("Imprimindo ROWS" + str(rows))
         return rows
 
-    def insert_major(self, name):
+    def insert_major(self, id, name, courses_id):
+        try:
+            self.cur.execute("INSERT INTO major VALUES (?, ?, ?)", (id, name, courses_id))
+            self.conn.commit()
+            self.alert_popup("Success", "The major was recorded!")
+            print("Sucess")
+        except:
+            self.alert_popup("Try again", "ERROR")
+
+    def view_major(self):
+        self.cur.execute("SELECT name FROM major")
+        rows = self.cur.fetchall()
+        return rows
+
+    def insert_courses(self, name):
         try:
             self.cur.execute("INSERT INTO major VALUES (?)", (name,))
             self.conn.commit()
@@ -35,8 +50,8 @@ class Database:
         except:
             self.alert_popup("Try again", "ERROR")
 
-    def view_major(self):
-        self.cur.execute("SELECT * FROM major")
+    def view_courses(self):
+        self.cur.execute("SELECT * FROM courses")
         rows = self.cur.fetchall()
         return rows
 

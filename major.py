@@ -4,13 +4,15 @@ database = Database("StudentPortal")
 
 class Major:
 
-    def __init__(self, name):
+    def __init__(self, id, name, courses):
+        self.id = id
         self.name = name
+        self.courses = courses
 
 
 
     def insert_major(self):
-        database.insert_major(self.name)
+        database.insert_major(self.id, self.name, self.courses)
 
     @staticmethod
     def list_major():

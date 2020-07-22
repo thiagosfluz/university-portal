@@ -2,6 +2,7 @@ from tkinter import *
 from student import Student
 from backend import Database
 from major import Major
+from courses import Courses
 
 database = Database("StudentPortal")
 
@@ -66,13 +67,19 @@ class Window():
         l3.grid(row=2, column=0)
 
         self.variable = StringVar()
+        major = []
 
 
         if len(Major.list_major()) > 0:
             self.variable.set(Major.list_major()[0])  # default value
-            w = OptionMenu(window, self.variable, *Major.list_major())
+
+            # create a list of string to be used in the method below
+            for i in Major.list_major():
+                major.append(str(*i))
+
+            w = OptionMenu(window, self.variable, *major)
             print("HEREEEEEEEEEEEE")
-            print(self.variable.get().strip())
+            print(self.variable.get())
             w.grid(row=2, column=1)
 
 
@@ -125,26 +132,56 @@ class Window():
         window = Toplevel()
         window.wm_title("Major")
 
-        l1 = Label(window, text="Major name:")
+        l1 = Label(window, text="Major ID:")
         l1.grid(row=0, column=0)
+
+        l2 = Label(window, text="Major name:")
+        l2.grid(row=1, column=0)
+
+        l3 = Label(window, text="Courses Curriculum:")
+        l3.grid(row=2, column=0)
 
         self.id_major = StringVar()
         e1 = Entry(window, textvariable=self.id_major)
         e1.grid(row=0, column=1)
 
-        b1 = Button(window, text="insert data", command=self.insert_major)
-        b1.grid(row=2, column=0)
+        self.name_major = StringVar()
+        e2 = Entry(window, textvariable=self.name_major)
+        e2.grid(row=1, column=1)
 
-        b2 = Button(window, text="free fields", command=self.list_major)
-        b2.grid(row=2, column=1)
+        b1 = Button(window, text="insert data", command=self.insert_major)
+        b1.grid(row=3, column=0)
+
+
+        self.variable = StringVar()
+
+        if len(Courses.list_courses()) > 0:
+            self.variable.set(Courses.list_courses()[0])  # default value
+
+            courses = []
+
+            # create a list of string to be used in the method below
+            for i in Courses.list_courses():
+                courses.append(str(*i))
+
+            w = OptionMenu(window, self.variable, *courses)
+            print("HEREEEEEEEEEEEE")
+            print(self.variable.get())
+            w.grid(row=2, column=1)
+
+
+        else:
+            self.variable.set("")
+            w = OptionMenu(window, self.variable, "")
+            w.grid(row=2, column=1)
 
         window.geometry("500x200")
 
         window.mainloop()
 
     def insert_major(self):
-        print(self.id_major.get())
-        major = Major(self.id_major.get())
+        print(self.id_major.get(), self.name_major.get())
+        major = Major(self.id_major.get(), self.name_major.get())
         major.insert_major()
 
     def list_major(self):
