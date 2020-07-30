@@ -3,6 +3,7 @@ from student import Student
 from backend import Database
 from major import Major
 from courses import Courses
+from course import Course
 
 database = Database("StudentPortal")
 
@@ -44,6 +45,8 @@ class Window():
 
         b10 = Button(window, text="List history", command=self.list_history)
         b10.grid(row=1, column=4)
+
+        self.courses = []
 
     def add_student(self):
         window = Toplevel()
@@ -141,6 +144,7 @@ class Window():
         l3 = Label(window, text="Courses Curriculum:")
         l3.grid(row=2, column=0)
 
+
         self.id_major = StringVar()
         e1 = Entry(window, textvariable=self.id_major)
         e1.grid(row=0, column=1)
@@ -168,8 +172,6 @@ class Window():
             print("HEREEEEEEEEEEEE")
             print(self.variable.get())
             w.grid(row=2, column=1)
-
-
         else:
             self.variable.set("")
             w = OptionMenu(window, self.variable, "")
@@ -216,8 +218,8 @@ class Window():
         l1 = Label(window, text="Major Curriculum ID:")
         l1.grid(row=0, column=0)
 
-        self.id_text = StringVar()
-        e1 = Entry(window, textvariable=self.id_text)
+        self.id_courses = StringVar()
+        e1 = Entry(window, textvariable=self.id_courses)
         e1.grid(row=0, column=1)
 
         l2 = Label(window, text="Year:")
@@ -230,19 +232,22 @@ class Window():
         l3 = Label(window, text="Semester:")
         l3.grid(row=2, column=0)
 
+        l4 = Label(window, text="Courses:")
+        l4.grid(row=3, column=0)
+
         self.id_semester = StringVar()
         e3 = Entry(window, textvariable=self.id_semester)
         e3.grid(row=2, column=1)
 
         self.variable = StringVar()
 
-        if len(Courses.list_courses()) > 0:
-            self.variable.set(Courses.list_courses()[0])  # default value
+        if len(Course.list_course()) > 0:
+            self.variable.set(Course.list_course()[0])  # default value
 
             courses = []
 
             # create a list of string to be used in the method below
-            for i in Courses.list_courses():
+            for i in Course.list_course():
                 courses.append(str(*i))
 
             w = OptionMenu(window, self.variable, *courses)
@@ -256,8 +261,11 @@ class Window():
             w = OptionMenu(window, self.variable, "")
             w.grid(row=3, column=1)
 
-        b1 = Button(window, text="insert data", command=self.insert_curriculum)
-        b1.grid(row=4, column=0)
+        b1 = Button(window, text="insert course", command=self.insert_course)
+        b1.grid(row=4, column=1)
+
+        b2 = Button(window, text="insert data", command=self.insert_curriculum)
+        b2.grid(row=5, column=0)
 
 
 
@@ -268,8 +276,15 @@ class Window():
 
         window.mainloop()
 
+    def insert_course(self):
+        print("Hiiiiii"+self.variable.get())
+        self.courses.append(self.variable.get())
+        print("Course was inserted")
+        print(self.courses)
+
     def insert_curriculum(self):
-        curriculum = Courses(self.self.id_text.get(), self.id_year.get(), self.id_semester)
+        print(self.id_courses.get(), self.id_year.get(), self.id_semester.get(), self.courses[0], self.courses[1])
+        curriculum = Courses(self.id_courses.get(), self.id_year.get(), self.id_semester.get(), self.courses[0], self.courses[1])
         curriculum.insert_courses()
 
     def list_curriculum(self):
@@ -299,36 +314,37 @@ class Window():
         l1 = Label(window, text="Insert curse ID:")
         l1.grid(row=0, column=0)
 
-        id_text = StringVar()
-        e1 = Entry(window, textvariable=id_text)
+        self.id_course = StringVar()
+        e1 = Entry(window, textvariable=self.id_course)
         e1.grid(row=0, column=1)
         window.geometry("500x200")
 
         l2 = Label(window, text="Insert curse Name:")
         l2.grid(row=1, column=0)
 
-        name_text = StringVar()
-        e2 = Entry(window, textvariable=name_text)
+        self.name_course = StringVar()
+        e2 = Entry(window, textvariable=self.name_course)
         e2.grid(row=1, column=1)
 
         l3 = Label(window, text="Insert hourly load:")
         l3.grid(row=2, column=0)
 
-        hourly_text = StringVar()
-        e3 = Entry(window, textvariable=hourly_text)
+        self.hourly_text = StringVar()
+        e3 = Entry(window, textvariable=self.hourly_text)
         e3.grid(row=2, column=1)
 
-        b1 = Button(window, text="insert data", command=self.list_course)
+        b1 = Button(window, text="insert data", command=self.insert_course_data)
         b1.grid(row=3, column=0)
-
-        b2 = Button(window, text="free fields", command=self.list_course)
-        b2.grid(row=3, column=1)
-
 
         window.geometry("500x200")
 
 
         window.mainloop()
+
+    def insert_course_data(self):
+        print(self.id_course.get(), self.name_course.get(), self.hourly_text.get())
+        course = Course(self.id_course.get(), self.name_course.get(), self.hourly_text.get())
+        course.insert_course()
 
 
     def list_course(self):
@@ -346,6 +362,10 @@ class Window():
 
         list1.configure(yscrollcommand=sb1.set)
         sb1.configure(command=list1.yview)
+
+        list1.delete(0, END)
+        for rows in Course.list_course():
+            list1.insert(END, rows)
 
         window.geometry("500x200")
 
@@ -389,6 +409,8 @@ class Window():
 
         b2 = Button(window, text="free fields", command=self.list_course)
         b2.grid(row=4, column=1)
+
+
 
 
         window.geometry("500x200")

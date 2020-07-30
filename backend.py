@@ -9,7 +9,8 @@ class Database:
         self.cur.execute("CREATE TABLE IF NOT EXISTS major (id INT PRIMARY KEY not null, name text not null, courses_id text not null, FOREIGN KEY (courses_id) references courses (id))")
         self.cur.execute("CREATE TABLE IF NOT EXISTS student (id INT PRIMARY KEY not null, name text not null, major_name text not null, "
                          "FOREIGN KEY (major_name) references major (name))")
-        self.cur.execute("CREATE TABLE IF NOT EXISTS courses (id INT PRIMARY KEY not null, year integer not null, semester integer not null)")
+        self.cur.execute("CREATE TABLE IF NOT EXISTS courses (id INT PRIMARY KEY not null, year integer not null, semester integer not null, course1 integer, course2 integer, FOREIGN KEY (course1) references course (id),FOREIGN KEY (course2) references course (id) )")
+        self.cur.execute("CREATE TABLE IF NOT EXISTS course (id INT PRIMARY KEY not null, name text not null, hourly integer not null)")
         self.conn.commit()
 
     def insert_student(self, id, name, major_name):
@@ -41,9 +42,9 @@ class Database:
         rows = self.cur.fetchall()
         return rows
 
-    def insert_courses(self, id, year, semester, courses_id):
+    def insert_courses(self, id, year, semester, course1, course2):
         try:
-            self.cur.execute("INSERT INTO courses VALUES (?, ?, ?, ?)", (id, year, semester, courses_id))
+            self.cur.execute("INSERT INTO courses VALUES (?, ?, ?, ?, ?)", (id, year, semester, course1, course2))
             self.conn.commit()
             self.alert_popup("Success", "The curriculum was recorded!")
             print("Success")
@@ -53,6 +54,21 @@ class Database:
     def view_courses(self):
         self.cur.execute("SELECT * FROM courses")
         rows = self.cur.fetchall()
+        return rows
+
+    def insert_course(self, id, name, duration):
+        try:
+            self.cur.execute("INSERT INTO course VALUES (?, ?, ?)", (id, name, duration))
+            self.conn.commit()
+            self.alert_popup("Success", "The course was recorded!")
+            print("Success")
+        except:
+            self.alert_popup("Try again", "ERROR")
+
+    def view_course(self):
+        self.cur.execute("SELECT id FROM course")
+        rows = self.cur.fetchall()
+        print("Imprimindo ROWS" + str(rows))
         return rows
 
     def alert_popup(self, title, message):
