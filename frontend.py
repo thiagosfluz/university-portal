@@ -280,11 +280,13 @@ class Window():
         print("Hiiiiii"+self.variable.get())
         self.courses.append(self.variable.get())
         print("Course was inserted")
-        print(self.courses)
+        print("This is the courses string"+str(self.courses[0]))
+        print("This is the courses string" + str(self.courses[1]))
+
 
     def insert_curriculum(self):
         print(self.id_courses.get(), self.id_year.get(), self.id_semester.get(), self.courses[0], self.courses[1])
-        curriculum = Courses(self.id_courses.get(), self.id_year.get(), self.id_semester.get(), self.courses[0], self.courses[1])
+        curriculum = Courses(self.id_courses.get(), self.id_year.get(), self.id_semester.get(), int(self.courses[0]), int(self.courses[1]))
         curriculum.insert_courses()
 
     def list_curriculum(self):
